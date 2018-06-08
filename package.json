@@ -1,8 +1,8 @@
 {
-  "name": "@swimlane/ngx-datatable",
+  "name": "pcneo-ngx-datatable",
   "version": "13.0.1",
   "description":
-    "ngx-datatable is a Angular2+ table grid component for presenting large and complex data.",
+    "forked from https://github.com/swimlane/ngx-datatable. ngx-datatable is a Angular2+ table grid component for presenting large and complex data.",
   "main": "release/index.js",
   "typings": "release/index.d.ts",
   "scripts": {
@@ -52,7 +52,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/swimlane/ngx-datatable.git"
+    "url": "git+https://github.com/whocodeworld/ngx-datatable.git"
   },
   "keywords": [
     "angularjs",
