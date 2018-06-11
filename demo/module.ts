@@ -1,3 +1,4 @@
+import { MultipleSortComponent } from './modified/multiple-sort-demo.component';
 import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -70,6 +71,7 @@ import { SummaryRowInlineHtmlComponent } from './summary/summary-row-inline-html
 @NgModule({
   declarations: [
     AppComponent,
+    MultipleSortComponent,
     BasicAutoComponent,
     BasicFixedComponent,
     FullScreenComponent,

@@ -21,6 +21,12 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         <h3>ngx-datatable <small>({{version}})</small></h3>
         <ul class="main-ul">
           <li>
+            <h4>Multiple Sort</h4>
+            <ul>
+              <li><a href="#multiple-sort" (click)="state='multiple-sort'">multiple sort</a></li>
+            </ul>
+          </li>
+          <li>
             <h4>Documentation</h4>
             <ul>
               <li>
@@ -126,6 +132,7 @@ import { Location, LocationStrategy, HashLocationStrategy } from '@angular/commo
         </ul>
       </nav>
       <content>
+        <multiple-sort-demo *ngIf="state === 'multiple-sort'"></multiple-sort-demo>
         <!-- Basic -->
         <basic-auto-demo *ngIf="!state"></basic-auto-demo>
         <basic-fixed-demo *ngIf="state === 'basic-fixed'"></basic-fixed-demo>

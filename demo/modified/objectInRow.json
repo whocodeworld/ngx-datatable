@@ -1,0 +1,32 @@
+[
+    {
+        "customer": {
+            "name": "Peter Kowatsch",
+            "id": 11404286
+        },
+        "name": "Ethel Price",
+        "gender": "female",
+        "company": "Johnson, Johnson and Partners, LLC CMP DDC",
+        "age": 22
+    },
+    {
+        "customer": {
+            "name": "Andreas Fleischmann",
+            "id": 507079
+        },
+        "name": "Claudine Neal",
+        "gender": "female",
+        "company": "Sealoud",
+        "age": 55
+    },
+    {
+        "customer": {
+            "name": "Benno Zimmerle",
+            "id": 249044
+        },
+        "name": "Beryl Rice",
+        "gender": "female",
+        "company": "Velity",
+        "age": 67
+    }
+]

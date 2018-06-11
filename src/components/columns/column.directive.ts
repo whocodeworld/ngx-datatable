@@ -7,6 +7,8 @@ import { ColumnChangesService } from '../../services/column-changes.service';
 @Directive({ selector: 'ngx-datatable-column' })
 export class DataTableColumnDirective implements OnChanges {
   
+  @Input() header1: string;
+  @Input() header2: string;
   @Input() name: string;
   @Input() prop: TableColumnProp;
   @Input() frozenLeft: any;

@@ -6,7 +6,7 @@ import { ValueGetter } from '../utils/column-prop-getters';
  * value from a row.
  * 'a.deep.value', 'normalprop', 0 (numeric)
  */
-export type TableColumnProp = string|number;
+export type TableColumnProp = string | number;
 
 /**
  * Column Type
@@ -146,6 +146,22 @@ export interface TableColumn {
   canAutoResize?: boolean;
 
   /**
+     * Column header1
+     * 
+     * @type {string}
+     * @memberOf TableColumn
+     */
+  header1?: string;
+
+  /** 
+   * Column header2
+   * 
+   * @type {string}
+   * @memberOf TableColumn
+   */
+  header2?: string;
+
+  /**
    * Column name or label
    *
    * @type {string}
@@ -187,7 +203,7 @@ export interface TableColumn {
    *
    * @memberOf TableColumn
    */
-  cellClass?: string | ((data: any) => string|any);
+  cellClass?: string | ((data: any) => string | any);
 
   /**
    * CSS classes for the header
@@ -195,7 +211,7 @@ export interface TableColumn {
    *
    * @memberOf TableColumn
    */
-  headerClass?: string | ((data: any) => string|any);
+  headerClass?: string | ((data: any) => string | any);
 
   /**
    * Header checkbox enabled
