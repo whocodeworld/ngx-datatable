@@ -1,5 +1,5 @@
 /**
- * angular2-data-table v"13.0.1" (https://github.com/swimlane/angular2-data-table)
+ * angular2-data-table v"13.0.1-0.3" (https://github.com/swimlane/angular2-data-table)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -2509,6 +2509,14 @@ var DataTableColumnDirective = /** @class */ (function () {
             this.columnChangesService.onInputChange();
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header1", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header2", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
@@ -6137,6 +6145,16 @@ function setColumnDefaults(columns) {
         }
         if (isNullOrUndefined(column.prop) && isNullOrUndefined(column.name)) {
             column.name = ''; // Fixes IE and Edge displaying `null`
+        }
+        /*
+             * the column-helper should be able to extract header name from
+             * http response
+            */
+        if (!isNullOrUndefined(column.header1)) {
+            column.header1 = camel_case_1.deCamelCase(String(column.header1));
+        }
+        if (!isNullOrUndefined(column.header2)) {
+            column.header2 = camel_case_1.deCamelCase(String(column.header2));
         }
         if (!column.hasOwnProperty('resizeable')) {
             column.resizeable = true;

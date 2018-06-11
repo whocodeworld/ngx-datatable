@@ -3,6 +3,8 @@ import { TableColumnProp } from '../../types';
 import { ColumnChangesService } from '../../services/column-changes.service';
 export declare class DataTableColumnDirective implements OnChanges {
     private columnChangesService;
+    header1: string;
+    header2: string;
     name: string;
     prop: TableColumnProp;
     frozenLeft: any;

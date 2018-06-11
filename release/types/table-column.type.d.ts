@@ -127,6 +127,20 @@ export interface TableColumn {
      */
     canAutoResize?: boolean;
     /**
+       * Column header1
+       *
+       * @type {string}
+       * @memberOf TableColumn
+       */
+    header1?: string;
+    /**
+     * Column header2
+     *
+     * @type {string}
+     * @memberOf TableColumn
+     */
+    header2?: string;
+    /**
      * Column name or label
      *
      * @type {string}

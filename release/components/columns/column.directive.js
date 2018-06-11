@@ -29,6 +29,14 @@ var DataTableColumnDirective = /** @class */ (function () {
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header1", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header2", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
     ], DataTableColumnDirective.prototype, "name", void 0);
     __decorate([
         core_1.Input(),
