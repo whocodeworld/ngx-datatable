@@ -51,7 +51,9 @@ export function setColumnDefaults(columns: TableColumn[]) {
       column.header2Title = deCamelCase(String(column.header2Title));
     }
 
-    if(!column.hasOwnProperty('modified')) {}
+    if(!column.hasOwnProperty('modified')) {
+      column.modified = true;
+    }
 
     if (!column.hasOwnProperty('resizeable')) {
       column.resizeable = true;
