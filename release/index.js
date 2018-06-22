@@ -6452,7 +6452,7 @@ function objValueGetter(obj, path) {
         return obj;
     var split = path.split('_');
     var objName = split[0];
-    var eleName = split[1].toLocaleLowerCase();
+    var eleName = split[1];
     var subObj = obj[objName];
     return subObj[eleName];
 }
