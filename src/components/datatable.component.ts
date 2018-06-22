@@ -21,7 +21,6 @@ import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-
 @Component({
   selector: 'ngx-datatable',
   template: `

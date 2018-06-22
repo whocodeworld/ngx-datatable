@@ -11,7 +11,6 @@ import { MouseEvent, KeyboardEvent } from '../../events';
 
 import { FontChangesService } from '../../services';
 
-
 @Component({
   selector: 'datatable-body-cell',
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -241,13 +240,13 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
   private _expanded: boolean;
   private _element: any;
 
+  constructor(element: ElementRef, private cd: ChangeDetectorRef, private fontChangesService: FontChangesService) {
+    this._element = element.nativeElement;
+  }
+
   ngOnInit() {
     this.fontChangesService.currentFont.subscribe(font => this.cellFont = font);
     this.fontChangesService.currentColumn.subscribe(column => this.clickedColumn = column);
-  }
-
-  constructor(element: ElementRef, private cd: ChangeDetectorRef, private fontChangesService: FontChangesService) {
-    this._element = element.nativeElement;
   }
   
   ngDoCheck(): void {

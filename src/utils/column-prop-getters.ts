@@ -107,7 +107,7 @@ export function objValueGetter(obj: any, path: string): any {
   const objName = split[0];
   const eleName = split[1].toLocaleLowerCase();
 
-  let subObj = obj[objName];
+  const subObj = obj[objName];
   return subObj[eleName];
 
 }

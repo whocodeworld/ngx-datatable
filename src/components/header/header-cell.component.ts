@@ -84,7 +84,7 @@ import { FontChangesService } from '../../services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class DataTableHeaderCellComponent implements OnInit{
+export class DataTableHeaderCellComponent implements OnInit {
 
   @Input() sortType: SortType;
   @Input() sortAscendingIcon: string;
