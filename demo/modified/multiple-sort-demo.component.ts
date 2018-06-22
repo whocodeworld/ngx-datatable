@@ -41,7 +41,7 @@ import {DatatableComponent} from '../../src/components/datatable.component';
         <ngx-datatable-column prop="customer" 
                               modified="true"
                               header1="name" 
-                              header2="id" 
+                              header2="customerId" 
                               header1Title="Name"
                               header2Title="Nummer"
                               [header1Template]="subHdr1Tpl"

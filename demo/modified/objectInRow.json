@@ -2,7 +2,7 @@
     {
         "customer": {
             "name": "Peter Kowatsch",
-            "id": 11404286
+            "customerId": 11404286
         },
         "name": {
             "first": "Ethel",
@@ -17,7 +17,7 @@
     {
         "customer": {
             "name": "Andreas Fleischmann",
-            "id": 507079
+            "customerId": 507079
         },
         "name": {
             "first": "Claudine",
@@ -32,7 +32,7 @@
     {
         "customer": {
             "name": "Benno Zimmerle",
-            "id": 249044
+            "customerId": 249044
         },
         "name": {
             "first": "Beryl",

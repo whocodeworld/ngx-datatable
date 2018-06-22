@@ -39,10 +39,10 @@ export function setColumnDefaults(columns: TableColumn[]) {
          * http response
         */
     if (!isNullOrUndefined(column.header1)) {
-      column.header1 = deCamelCase(String(column.header1)).toLowerCase();
+      column.header1 = String(column.header1);
     }
     if (!isNullOrUndefined(column.header2)) {
-      column.header2 = deCamelCase(String(column.header2)).toLowerCase();
+      column.header2 = String(column.header2);
     }
     if (!isNullOrUndefined(column.header1Title)) {
       column.header1Title = deCamelCase(String(column.header1Title));
