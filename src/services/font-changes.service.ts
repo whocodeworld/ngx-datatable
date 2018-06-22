@@ -10,7 +10,7 @@ export class FontChangesService {
   currentFont = this.fontSource.asObservable();
   currentColumn = this.columnSource.asObservable();
 
-  changeFont(font: string, column) {
+  changeFont(font: string, column: string) {
     this.columnSource.next(column);
     this.fontSource.next(font);
   }

@@ -178,7 +178,7 @@ export interface TableColumn {
      * @memberOf TableColumn
      */
     header2Title?: string;
-p
+
   /**
      * is this column directive modified? 
      * so that the modification in other place will be recognized

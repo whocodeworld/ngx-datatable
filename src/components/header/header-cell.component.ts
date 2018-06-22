@@ -264,7 +264,7 @@ export class DataTableHeaderCellComponent implements OnInit {
     if (!this.column.sortable) return;
     this.clickedHeader = header;
     this.column.clickedHeader = this.column[header];
-    this.fontChangesService.changeFont(header, this.column.prop);
+    this.fontChangesService.changeFont(header, this.column.prop.toString());
     const newValue = nextSortDir(this.sortType, this.sortDir);
     this.sort.emit({
       clickedHeader: header,
