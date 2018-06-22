@@ -1,10 +1,12 @@
 import {
   Component, Input, EventEmitter, Output, HostBinding, 
-  HostListener, ChangeDetectionStrategy, ChangeDetectorRef
+  HostListener, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, TemplateRef
 } from '@angular/core';
 import { SortDirection, SortType, SelectionType, TableColumn } from '../../types';
 import { nextSortDir } from '../../utils';
 import { MouseEvent } from '../../events';
+
+import { FontChangesService } from '../../services';
 
 @Component({
   selector: 'datatable-header-cell',
@@ -25,7 +27,7 @@ import { MouseEvent } from '../../events';
         />
       </label>
       <span
-        *ngIf="!column.headerTemplate"
+        *ngIf="!column.headerTemplate && !column.modified"
         class="datatable-header-cell-wrapper">
         <span
           class="datatable-header-cell-label draggable"
@@ -38,11 +40,43 @@ import { MouseEvent } from '../../events';
         [ngTemplateOutlet]="column.headerTemplate"
         [ngTemplateOutletContext]="cellContext">
       </ng-template>
-      <span
+
+      <span *ngIf="!column.modified"
         (click)="onSort()"
         [class]="sortClass">
       </span>
+
+      <div class="header1Class">
+        <ng-template
+            *ngIf="column.header1"
+            [ngTemplateOutlet]="column.header1Template"
+            [ngTemplateOutletContext]="cellContext">
+        </ng-template>
+
+        <span
+            *ngIf="clickedHeader === 'header1'"
+            (click)="onSortHeader('header1')"
+            [class]="sortClass">
+        </span>
+      </div>
+
+        <br>
+
+      <div class="header2Class">
+        <ng-template
+          *ngIf="column.header2"
+          [ngTemplateOutlet]="column.header2Template"
+          [ngTemplateOutletContext]="cellContext">
+        </ng-template>
+        <span
+          *ngIf="clickedHeader === 'header2'"
+          (click)="onSortHeader('header2')"
+          [class]="sortClass">
+        </span>
+      </div>
+      
     </div>
+
   `,
   host: {
     class: 'datatable-header-cell'
@@ -50,7 +84,7 @@ import { MouseEvent } from '../../events';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class DataTableHeaderCellComponent {
+export class DataTableHeaderCellComponent implements OnInit{
 
   @Input() sortType: SortType;
   @Input() sortAscendingIcon: string;
@@ -61,6 +95,10 @@ export class DataTableHeaderCellComponent {
   @Input() targetMarkerContext: any;
 
   _allRowsSelected: boolean;
+
+  clickedHeader: string;
+  headerFont: string;
+  clickedColumn: string;
   
   @Input() set allRowsSelected(value) {
     this._allRowsSelected = value;
@@ -166,10 +204,15 @@ export class DataTableHeaderCellComponent {
   sortDir: SortDirection;
   selectFn = this.select.emit.bind(this.select);
 
+  sortHeaderFn = this.onSortHeader.bind(this);
+  headerTemplate: TemplateRef<any>;
+
   cellContext: any = {
     column: this.column,
     sortDir: this.sortDir,
     sortFn: this.sortFn,
+    sortHeaderFn: this.sortHeaderFn,
+    headerTemplate: this.headerTemplate,
     allRowsSelected: this.allRowsSelected,
     selectFn: this.selectFn
   };
@@ -177,7 +220,10 @@ export class DataTableHeaderCellComponent {
   private _column: TableColumn;
   private _sorts: any[];
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(
+    private cd: ChangeDetectorRef,
+    private fontChangesService: FontChangesService
+  ) { }
 
   @HostListener('contextmenu', ['$event'])
   onContextmenu($event: MouseEvent): void {
@@ -187,11 +233,20 @@ export class DataTableHeaderCellComponent {
   calcSortDir(sorts: any[]): any {
     if (sorts && this.column) {
       const sort = sorts.find((s: any) => {
+        if(s.prop.indexOf('_') !== -1) {
+          return s.prop.indexOf(this.column.prop) !== -1;
+          
+        }
         return s.prop === this.column.prop;
       });
 
       if (sort) return sort.dir;
     }
+  }
+
+  ngOnInit() {
+    this.fontChangesService.currentFont.subscribe(font => this.headerFont = font);
+    this.fontChangesService.currentColumn.subscribe(column => this.clickedColumn = column);
   }
 
   onSort(): void {
@@ -205,6 +260,20 @@ export class DataTableHeaderCellComponent {
     });
   }
 
+  onSortHeader(header: string): void {
+    if (!this.column.sortable) return;
+    this.clickedHeader = header;
+    this.column.clickedHeader = this.column[header];
+    this.fontChangesService.changeFont(header, this.column.prop);
+    const newValue = nextSortDir(this.sortType, this.sortDir);
+    this.sort.emit({
+      clickedHeader: header,
+      column: this.column,
+      prevValue: this.sortDir,
+      newValue
+    });
+  }
+  
   calcSortClass(sortDir: SortDirection): string {
     if (sortDir === SortDirection.asc) {
       return `sort-btn sort-asc ${this.sortAscendingIcon}`;

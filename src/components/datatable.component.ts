@@ -10,7 +10,7 @@ import {
   forceFillColumnWidths, adjustColumnWidths, sortRows,
   setColumnDefaults, throttleable, translateTemplates
 } from '../utils';
-import { ScrollbarHelper, DimensionsHelper, ColumnChangesService } from '../services';
+import { ScrollbarHelper, DimensionsHelper, ColumnChangesService, FontChangesService } from '../services';
 import { ColumnMode, SortType, SelectionType, TableColumn, ContextmenuType } from '../types';
 import { DataTableBodyComponent } from './body';
 import { DatatableGroupHeaderDirective } from './body/body-group-header.directive';
@@ -20,6 +20,7 @@ import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
 import { BehaviorSubject, Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'ngx-datatable',
@@ -681,7 +682,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
     private cd: ChangeDetectorRef,
     element: ElementRef,
     differs: KeyValueDiffers,
-    private columnChangesService: ColumnChangesService) {
+    private columnChangesService: ColumnChangesService,
+    private fontChangesService: FontChangesService) {
 
     // get ref to elm for measuring
     this.element = element.nativeElement;
@@ -1062,7 +1064,6 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
         selected: this.selected
       });
     }
-
     this.sorts = event.sorts;
 
     // this could be optimized better since it will resort

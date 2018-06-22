@@ -39,11 +39,19 @@ export function setColumnDefaults(columns: TableColumn[]) {
          * http response
         */
     if (!isNullOrUndefined(column.header1)) {
-      column.header1 = deCamelCase(String(column.header1));
+      column.header1 = deCamelCase(String(column.header1)).toLowerCase();
     }
     if (!isNullOrUndefined(column.header2)) {
-      column.header2 = deCamelCase(String(column.header2));
+      column.header2 = deCamelCase(String(column.header2)).toLowerCase();
     }
+    if (!isNullOrUndefined(column.header1Title)) {
+      column.header1Title = deCamelCase(String(column.header1Title));
+    }
+    if (!isNullOrUndefined(column.header2Title)) {
+      column.header2Title = deCamelCase(String(column.header2Title));
+    }
+
+    if(!column.hasOwnProperty('modified')) {}
 
     if (!column.hasOwnProperty('resizeable')) {
       column.resizeable = true;

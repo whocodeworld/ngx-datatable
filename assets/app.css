@@ -300,3 +300,5 @@ select {
 	font-weight: bold;
 	background-color: #ffeb3b;
 }
+
+.is-bold {font-weight: bold !important;}

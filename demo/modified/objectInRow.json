@@ -4,9 +4,14 @@
             "name": "Peter Kowatsch",
             "id": 11404286
         },
-        "name": "Ethel Price",
+        "name": {
+            "first": "Ethel",
+            "last": "Price"
+        },
         "gender": "female",
-        "company": "Johnson, Johnson and Partners, LLC CMP DDC",
+        "company": {
+            "name": "Johnson, Johnson and Partners, LLC CMP DDC"
+        },
         "age": 22
     },
     {
@@ -14,9 +19,14 @@
             "name": "Andreas Fleischmann",
             "id": 507079
         },
-        "name": "Claudine Neal",
+        "name": {
+            "first": "Claudine",
+            "last": "Neal"
+        },
         "gender": "female",
-        "company": "Sealoud",
+        "company": {
+            "name": "Sealoud"
+        },
         "age": 55
     },
     {
@@ -24,9 +34,14 @@
             "name": "Benno Zimmerle",
             "id": 249044
         },
-        "name": "Beryl Rice",
+        "name": {
+            "first": "Beryl",
+            "last": "Price"
+        },
         "gender": "female",
-        "company": "Velity",
+        "company": {
+            "name": "Velity"
+        },
         "age": 67
     }
 ]

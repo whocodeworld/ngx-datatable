@@ -151,7 +151,7 @@ export interface TableColumn {
      * @type {string}
      * @memberOf TableColumn
      */
-  header1?: string;
+    header1?: string;
 
   /** 
    * Column header2
@@ -159,7 +159,42 @@ export interface TableColumn {
    * @type {string}
    * @memberOf TableColumn
    */
-  header2?: string;
+    header2?: string;
+
+  /**
+     * Column header1Title
+     * temp field, should be replaced by locale
+     * 
+     * @type {string}
+     * @memberOf TableColumn
+     */
+    header1Title?: string;
+
+    /** 
+     * Column header2Title
+     * temp field, should be replaced by local
+     * 
+     * @type {string}
+     * @memberOf TableColumn
+     */
+    header2Title?: string;
+p
+  /**
+     * is this column directive modified? 
+     * so that the modification in other place will be recognized
+     * 
+     * @type {boolean}
+     * @memberOf TableColumn
+     */
+  modified?: boolean;
+
+  /**
+     * clicked Header
+     * 
+     * @type {string}
+     * @memberOf TableColumn
+     */
+    clickedHeader?: string;
 
   /**
    * Column name or label

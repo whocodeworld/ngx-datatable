@@ -37,7 +37,8 @@ import {
 import {
   ScrollbarHelper,
   DimensionsHelper,
-  ColumnChangesService
+  ColumnChangesService,
+  FontChangesService
 } from './services';
 
 @NgModule({
@@ -47,7 +48,8 @@ import {
   providers: [
     ScrollbarHelper,
     DimensionsHelper,
-    ColumnChangesService
+    ColumnChangesService,
+    FontChangesService
   ],
   declarations: [
     DataTableFooterTemplateDirective,

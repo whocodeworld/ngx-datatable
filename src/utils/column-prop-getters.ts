@@ -25,6 +25,8 @@ export function getterForProp(prop: TableColumnProp): ValueGetter {
     // deep or simple
     if (prop.indexOf('.') !== -1) {
       return deepValueGetter;
+    } else if(prop.indexOf('_') !== -1) {
+      return objValueGetter;
     } else {
       return shallowValueGetter;
     }
@@ -90,4 +92,22 @@ export function deepValueGetter(obj: any, path: string): any {
   }
 
   return current;
+}
+
+/**
+ * Returns a deep object given a string. obj['obj.name']
+ * @param {object} obj
+ * @param {string} path
+ */
+export function objValueGetter(obj: any, path: string): any {
+  if (obj == null) return '';
+  if(!obj || !path) return obj;
+
+  const split = path.split('_');
+  const objName = split[0];
+  const eleName = split[1].toLocaleLowerCase();
+
+  let subObj = obj[objName];
+  return subObj[eleName];
+
 }

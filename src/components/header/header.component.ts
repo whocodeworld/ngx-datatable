@@ -59,6 +59,8 @@ import { MouseEvent } from '../../events';
 })
 export class DataTableHeaderComponent {
 
+  clickedHeader: string;
+
   @Input() sortAscendingIcon: any;
   @Input() sortDescendingIcon: any;
   @Input() scrollbarH: boolean;
@@ -235,9 +237,12 @@ export class DataTableHeaderComponent {
     return this._columnsByPin[2].columns[index - leftColumnCount - centerColumnCount];
   }
 
-  onSort({ column, prevValue, newValue }: any): void {
+  onSort({ clickedHeader, column, prevValue, newValue }: any): void {
     // if we are dragging don't sort!
     if (column.dragging) return;
+
+    console.log(clickedHeader);
+    this.clickedHeader = clickedHeader;
 
     const sorts = this.calcNewSorts(column, prevValue, newValue);
     this.sort.emit({
@@ -265,12 +270,18 @@ export class DataTableHeaderComponent {
       sorts.splice(idx, 1);
     } else if (prevValue) {
       sorts[idx].dir = newValue;
+      if(column.clickedHeader) {
+        sorts[idx].prop = column.prop + '_' + column.clickedHeader;
+      }
     } else {
       if (this.sortType === SortType.single) {
         sorts.splice(0, this.sorts.length);
       }
-
-      sorts.push({ dir: newValue, prop: column.prop });
+      if(column.clickedHeader) {
+        sorts.push({ dir: newValue, prop: column.prop + '_' + column.clickedHeader });
+      } else {
+        sorts.push({ dir: newValue, prop: column.prop });
+      }
     }
 
     return sorts;

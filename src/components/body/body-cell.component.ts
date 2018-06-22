@@ -1,6 +1,6 @@
 import {
   Component, Input, PipeTransform, HostBinding, ViewChild, ChangeDetectorRef,
-  Output, EventEmitter, HostListener, ElementRef, ViewContainerRef, OnDestroy, DoCheck,
+  Output, EventEmitter, HostListener, ElementRef, ViewContainerRef, OnInit, OnDestroy, DoCheck,
   ChangeDetectionStrategy
 } from '@angular/core';
 
@@ -9,9 +9,12 @@ import { SortDirection } from '../../types';
 import { TableColumn } from '../../types/table-column.type';
 import { MouseEvent, KeyboardEvent } from '../../events';
 
+import { FontChangesService } from '../../services';
+
+
 @Component({
   selector: 'datatable-body-cell',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="datatable-body-cell-label">
       <label
@@ -24,19 +27,43 @@ import { MouseEvent, KeyboardEvent } from '../../events';
         />
       </label>
       <span
-        *ngIf="!column.cellTemplate"
+        *ngIf="!column.cellTemplate && !column.modified"
         [title]="sanitizedValue"
         [innerHTML]="value">
       </span>
+
+
+      
       <ng-template #cellTemplate
         *ngIf="column.cellTemplate"
         [ngTemplateOutlet]="column.cellTemplate"
         [ngTemplateOutletContext]="cellContext">
       </ng-template>
+
+
+      <div [class.is-bold]="clickedColumn === column.prop && cellFont === 'header1'">
+      <ng-template #cell1Template
+        *ngIf="column.cell1Template"
+        [ngTemplateOutlet]="column.cell1Template"
+        [ngTemplateOutletContext]="cellContext">
+      </ng-template>
+      </div>
+
+      <br>
+
+      <div [ngClass]="{'is-bold': clickedColumn === column.prop && cellFont === 'header2'}">
+      <ng-template #cell2Template
+        *ngIf="column.cell2Template"
+        [ngTemplateOutlet]="column.cell2Template"
+        [ngTemplateOutletContext]="cellContext">
+      </ng-template>
+      </div>
+      
+      
     </div>
   `
 })
-export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
+export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
   @Input() displayCheck: any;
 
   @Input() set group(group: any) {
@@ -189,6 +216,9 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   onCheckboxChangeFn = this.onCheckboxChange.bind(this);
   activateFn = this.activate.emit.bind(this.activate);
 
+  cellFont: string;
+  clickedColumn: any;
+
   cellContext: any = {
     onCheckboxChangeFn: this.onCheckboxChangeFn,
     activateFn: this.activateFn,
@@ -211,7 +241,12 @@ export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
   private _expanded: boolean;
   private _element: any;
 
-  constructor(element: ElementRef, private cd: ChangeDetectorRef) {
+  ngOnInit() {
+    this.fontChangesService.currentFont.subscribe(font => this.cellFont = font);
+    this.fontChangesService.currentColumn.subscribe(column => this.clickedColumn = column);
+  }
+
+  constructor(element: ElementRef, private cd: ChangeDetectorRef, private fontChangesService: FontChangesService) {
     this._element = element.nativeElement;
   }
   

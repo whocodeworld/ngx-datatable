@@ -1,5 +1,5 @@
 /**
- * angular2-data-table v"13.0.1-0.3" (https://github.com/swimlane/angular2-data-table)
+ * angular2-data-table v"13.0.1-0.5" (https://github.com/swimlane/angular2-data-table)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -225,9 +225,11 @@ var core_1 = __webpack_require__("@angular/core");
 var utils_1 = __webpack_require__("./src/utils/index.ts");
 var types_1 = __webpack_require__("./src/types/index.ts");
 var events_1 = __webpack_require__("./src/events.ts");
+var services_1 = __webpack_require__("./src/services/index.ts");
 var DataTableBodyCellComponent = /** @class */ (function () {
-    function DataTableBodyCellComponent(element, cd) {
+    function DataTableBodyCellComponent(element, cd, fontChangesService) {
         this.cd = cd;
+        this.fontChangesService = fontChangesService;
         this.activate = new core_1.EventEmitter();
         this.isFocused = false;
         this.onCheckboxChangeFn = this.onCheckboxChange.bind(this);
@@ -417,6 +419,11 @@ var DataTableBodyCellComponent = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    DataTableBodyCellComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.fontChangesService.currentFont.subscribe(function (font) { return _this.cellFont = font; });
+        this.fontChangesService.currentColumn.subscribe(function (column) { return _this.clickedColumn = column; });
+    };
     DataTableBodyCellComponent.prototype.ngDoCheck = function () {
         this.checkValueUpdates();
     };
@@ -637,10 +644,10 @@ var DataTableBodyCellComponent = /** @class */ (function () {
     DataTableBodyCellComponent = __decorate([
         core_1.Component({
             selector: 'datatable-body-cell',
-            changeDetection: core_1.ChangeDetectionStrategy.OnPush,
-            template: "\n    <div class=\"datatable-body-cell-label\">\n      <label\n        *ngIf=\"column.checkboxable && (!displayCheck || displayCheck(row, column, value))\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"isSelected\"\n          (click)=\"onCheckboxChange($event)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.cellTemplate\"\n        [title]=\"sanitizedValue\"\n        [innerHTML]=\"value\">\n      </span>\n      <ng-template #cellTemplate\n        *ngIf=\"column.cellTemplate\"\n        [ngTemplateOutlet]=\"column.cellTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n    </div>\n  "
+            // changeDetection: ChangeDetectionStrategy.OnPush,
+            template: "\n    <div class=\"datatable-body-cell-label\">\n      <label\n        *ngIf=\"column.checkboxable && (!displayCheck || displayCheck(row, column, value))\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"isSelected\"\n          (click)=\"onCheckboxChange($event)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.cellTemplate && !column.modified\"\n        [title]=\"sanitizedValue\"\n        [innerHTML]=\"value\">\n      </span>\n\n\n      \n      <ng-template #cellTemplate\n        *ngIf=\"column.cellTemplate\"\n        [ngTemplateOutlet]=\"column.cellTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n\n\n      <div [class.is-bold]=\"clickedColumn === column.prop && cellFont === 'header1'\">\n      <ng-template #cell1Template\n        *ngIf=\"column.cell1Template\"\n        [ngTemplateOutlet]=\"column.cell1Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n\n      <br>\n\n      <div [ngClass]=\"{'is-bold': clickedColumn === column.prop && cellFont === 'header2'}\">\n      <ng-template #cell2Template\n        *ngIf=\"column.cell2Template\"\n        [ngTemplateOutlet]=\"column.cell2Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n      \n      \n    </div>\n  "
         }),
-        __metadata("design:paramtypes", [core_1.ElementRef, core_1.ChangeDetectorRef])
+        __metadata("design:paramtypes", [core_1.ElementRef, core_1.ChangeDetectorRef, services_1.FontChangesService])
     ], DataTableBodyCellComponent);
     return DataTableBodyCellComponent;
 }());
@@ -1163,7 +1170,7 @@ var DataTableBodyRowComponent = /** @class */ (function () {
     DataTableBodyRowComponent = __decorate([
         core_1.Component({
             selector: 'datatable-body-row',
-            changeDetection: core_1.ChangeDetectionStrategy.OnPush,
+            // changeDetection: ChangeDetectionStrategy.OnPush,
             template: "\n    <div\n      *ngFor=\"let colGroup of _columnsByPin; let i = index; trackBy: trackByGroups\"\n      class=\"datatable-row-{{colGroup.type}} datatable-row-group\"\n      [ngStyle]=\"_groupStyles[colGroup.type]\">\n      <datatable-body-cell\n        *ngFor=\"let column of colGroup.columns; let ii = index; trackBy: columnTrackingFn\"\n        tabindex=\"-1\"\n        [row]=\"row\"\n        [group]=\"group\"\n        [expanded]=\"expanded\"\n        [isSelected]=\"isSelected\"\n        [rowIndex]=\"rowIndex\"\n        [column]=\"column\"\n        [rowHeight]=\"rowHeight\"\n        [displayCheck]=\"displayCheck\"\n        (activate)=\"onActivate($event, ii)\">\n      </datatable-body-cell>\n    </div>\n  "
         }),
         __param(1, core_1.SkipSelf()),
@@ -2511,12 +2518,24 @@ var DataTableColumnDirective = /** @class */ (function () {
     };
     __decorate([
         core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], DataTableColumnDirective.prototype, "modified", void 0);
+    __decorate([
+        core_1.Input(),
         __metadata("design:type", String)
     ], DataTableColumnDirective.prototype, "header1", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
     ], DataTableColumnDirective.prototype, "header2", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header1Title", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], DataTableColumnDirective.prototype, "header2Title", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
@@ -2607,6 +2626,26 @@ var DataTableColumnDirective = /** @class */ (function () {
         core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef }),
         __metadata("design:type", core_1.TemplateRef)
     ], DataTableColumnDirective.prototype, "headerTemplate", void 0);
+    __decorate([
+        core_1.Input(),
+        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "header1Template", void 0);
+    __decorate([
+        core_1.Input(),
+        core_1.ContentChild(column_header_directive_1.DataTableColumnHeaderDirective, { read: core_1.TemplateRef }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "header2Template", void 0);
+    __decorate([
+        core_1.Input(),
+        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, { read: core_1.TemplateRef }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "cell1Template", void 0);
+    __decorate([
+        core_1.Input(),
+        core_1.ContentChild(column_cell_directive_1.DataTableColumnCellDirective, { read: core_1.TemplateRef }),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DataTableColumnDirective.prototype, "cell2Template", void 0);
     DataTableColumnDirective = __decorate([
         core_1.Directive({ selector: 'ngx-datatable-column' }),
         __metadata("design:paramtypes", [column_changes_service_1.ColumnChangesService])
@@ -2687,11 +2726,12 @@ var footer_1 = __webpack_require__("./src/components/footer/index.ts");
 var header_1 = __webpack_require__("./src/components/header/index.ts");
 var rxjs_1 = __webpack_require__("rxjs");
 var DatatableComponent = /** @class */ (function () {
-    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService) {
+    function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs, columnChangesService, fontChangesService) {
         this.scrollbarHelper = scrollbarHelper;
         this.dimensionsHelper = dimensionsHelper;
         this.cd = cd;
         this.columnChangesService = columnChangesService;
+        this.fontChangesService = fontChangesService;
         /**
          * List of row objects that should be
          * represented as selected in the grid.
@@ -3823,7 +3863,8 @@ var DatatableComponent = /** @class */ (function () {
             core_1.ChangeDetectorRef,
             core_1.ElementRef,
             core_1.KeyValueDiffers,
-            services_1.ColumnChangesService])
+            services_1.ColumnChangesService,
+            services_1.FontChangesService])
     ], DatatableComponent);
     return DatatableComponent;
 }());
@@ -4230,18 +4271,23 @@ var core_1 = __webpack_require__("@angular/core");
 var types_1 = __webpack_require__("./src/types/index.ts");
 var utils_1 = __webpack_require__("./src/utils/index.ts");
 var events_1 = __webpack_require__("./src/events.ts");
+var services_1 = __webpack_require__("./src/services/index.ts");
 var DataTableHeaderCellComponent = /** @class */ (function () {
-    function DataTableHeaderCellComponent(cd) {
+    function DataTableHeaderCellComponent(cd, fontChangesService) {
         this.cd = cd;
+        this.fontChangesService = fontChangesService;
         this.sort = new core_1.EventEmitter();
         this.select = new core_1.EventEmitter();
         this.columnContextmenu = new core_1.EventEmitter(false);
         this.sortFn = this.onSort.bind(this);
         this.selectFn = this.select.emit.bind(this.select);
+        this.sortHeaderFn = this.onSortHeader.bind(this);
         this.cellContext = {
             column: this.column,
             sortDir: this.sortDir,
             sortFn: this.sortFn,
+            sortHeaderFn: this.sortHeaderFn,
+            headerTemplate: this.headerTemplate,
             allRowsSelected: this.allRowsSelected,
             selectFn: this.selectFn
         };
@@ -4365,17 +4411,39 @@ var DataTableHeaderCellComponent = /** @class */ (function () {
         var _this = this;
         if (sorts && this.column) {
             var sort = sorts.find(function (s) {
+                if (s.prop.indexOf('_') !== -1) {
+                    return s.prop.indexOf(_this.column.prop) !== -1;
+                }
                 return s.prop === _this.column.prop;
             });
             if (sort)
                 return sort.dir;
         }
     };
+    DataTableHeaderCellComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.fontChangesService.currentFont.subscribe(function (font) { return _this.headerFont = font; });
+        this.fontChangesService.currentColumn.subscribe(function (column) { return _this.clickedColumn = column; });
+    };
     DataTableHeaderCellComponent.prototype.onSort = function () {
         if (!this.column.sortable)
             return;
         var newValue = utils_1.nextSortDir(this.sortType, this.sortDir);
         this.sort.emit({
+            column: this.column,
+            prevValue: this.sortDir,
+            newValue: newValue
+        });
+    };
+    DataTableHeaderCellComponent.prototype.onSortHeader = function (header) {
+        if (!this.column.sortable)
+            return;
+        this.clickedHeader = header;
+        this.column.clickedHeader = this.column[header];
+        this.fontChangesService.changeFont(header, this.column.prop);
+        var newValue = utils_1.nextSortDir(this.sortType, this.sortDir);
+        this.sort.emit({
+            clickedHeader: header,
             column: this.column,
             prevValue: this.sortDir,
             newValue: newValue
@@ -4486,13 +4554,14 @@ var DataTableHeaderCellComponent = /** @class */ (function () {
     DataTableHeaderCellComponent = __decorate([
         core_1.Component({
             selector: 'datatable-header-cell',
-            template: "\n    <div class=\"datatable-header-cell-template-wrap\">\n      <ng-template\n        *ngIf=\"isTarget\"\n        [ngTemplateOutlet]=\"targetMarkerTemplate\"\n        [ngTemplateOutletContext]=\"targetMarkerContext\">\n      </ng-template>\n      <label\n        *ngIf=\"isCheckboxable\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"allRowsSelected\"\n          (change)=\"select.emit(!allRowsSelected)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.headerTemplate\"\n        class=\"datatable-header-cell-wrapper\">\n        <span\n          class=\"datatable-header-cell-label draggable\"\n          (click)=\"onSort()\"\n          [innerHTML]=\"name\">\n        </span>\n      </span>\n      <ng-template\n        *ngIf=\"column.headerTemplate\"\n        [ngTemplateOutlet]=\"column.headerTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      <span\n        (click)=\"onSort()\"\n        [class]=\"sortClass\">\n      </span>\n    </div>\n  ",
+            template: "\n    <div class=\"datatable-header-cell-template-wrap\">\n      <ng-template\n        *ngIf=\"isTarget\"\n        [ngTemplateOutlet]=\"targetMarkerTemplate\"\n        [ngTemplateOutletContext]=\"targetMarkerContext\">\n      </ng-template>\n      <label\n        *ngIf=\"isCheckboxable\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"allRowsSelected\"\n          (change)=\"select.emit(!allRowsSelected)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.headerTemplate && !column.modified\"\n        class=\"datatable-header-cell-wrapper\">\n        <span\n          class=\"datatable-header-cell-label draggable\"\n          (click)=\"onSort()\"\n          [innerHTML]=\"name\">\n        </span>\n      </span>\n      <ng-template\n        *ngIf=\"column.headerTemplate\"\n        [ngTemplateOutlet]=\"column.headerTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n\n      <span *ngIf=\"!column.modified\"\n        (click)=\"onSort()\"\n        [class]=\"sortClass\">\n      </span>\n\n      <div class=\"header1Class\">\n        <ng-template\n            *ngIf=\"column.header1\"\n            [ngTemplateOutlet]=\"column.header1Template\"\n            [ngTemplateOutletContext]=\"cellContext\">\n        </ng-template>\n\n        <span\n            *ngIf=\"clickedHeader === 'header1'\"\n            (click)=\"onSortHeader('header1')\"\n            [class]=\"sortClass\">\n        </span>\n      </div>\n\n        <br>\n\n      <div class=\"header2Class\">\n        <ng-template\n          *ngIf=\"column.header2\"\n          [ngTemplateOutlet]=\"column.header2Template\"\n          [ngTemplateOutletContext]=\"cellContext\">\n        </ng-template>\n        <span\n          *ngIf=\"clickedHeader === 'header2'\"\n          (click)=\"onSortHeader('header2')\"\n          [class]=\"sortClass\">\n        </span>\n      </div>\n      \n    </div>\n\n  ",
             host: {
                 class: 'datatable-header-cell'
             },
             changeDetection: core_1.ChangeDetectionStrategy.OnPush
         }),
-        __metadata("design:paramtypes", [core_1.ChangeDetectorRef])
+        __metadata("design:paramtypes", [core_1.ChangeDetectorRef,
+            services_1.FontChangesService])
     ], DataTableHeaderCellComponent);
     return DataTableHeaderCellComponent;
 }());
@@ -4681,10 +4750,12 @@ var DataTableHeaderComponent = /** @class */ (function () {
         return this._columnsByPin[2].columns[index - leftColumnCount - centerColumnCount];
     };
     DataTableHeaderComponent.prototype.onSort = function (_a) {
-        var column = _a.column, prevValue = _a.prevValue, newValue = _a.newValue;
+        var clickedHeader = _a.clickedHeader, column = _a.column, prevValue = _a.prevValue, newValue = _a.newValue;
         // if we are dragging don't sort!
         if (column.dragging)
             return;
+        console.log(clickedHeader);
+        this.clickedHeader = clickedHeader;
         var sorts = this.calcNewSorts(column, prevValue, newValue);
         this.sort.emit({
             sorts: sorts,
@@ -4709,12 +4780,20 @@ var DataTableHeaderComponent = /** @class */ (function () {
         }
         else if (prevValue) {
             sorts[idx].dir = newValue;
+            if (column.clickedHeader) {
+                sorts[idx].prop = column.prop + '_' + column.clickedHeader;
+            }
         }
         else {
             if (this.sortType === types_1.SortType.single) {
                 sorts.splice(0, this.sorts.length);
             }
-            sorts.push({ dir: newValue, prop: column.prop });
+            if (column.clickedHeader) {
+                sorts.push({ dir: newValue, prop: column.prop + '_' + column.clickedHeader });
+            }
+            else {
+                sorts.push({ dir: newValue, prop: column.prop });
+            }
         }
         return sorts;
     };
@@ -5033,7 +5112,8 @@ var NgxDatatableModule = /** @class */ (function () {
             providers: [
                 services_1.ScrollbarHelper,
                 services_1.DimensionsHelper,
-                services_1.ColumnChangesService
+                services_1.ColumnChangesService,
+                services_1.FontChangesService
             ],
             declarations: [
                 components_1.DataTableFooterTemplateDirective,
@@ -5888,6 +5968,45 @@ exports.DimensionsHelper = DimensionsHelper;
 
 /***/ }),
 
+/***/ "./src/services/font-changes.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("@angular/core");
+var rxjs_1 = __webpack_require__("rxjs");
+var FontChangesService = /** @class */ (function () {
+    function FontChangesService() {
+        this.fontSource = new rxjs_1.BehaviorSubject('default font');
+        this.columnSource = new rxjs_1.BehaviorSubject('default column');
+        this.currentFont = this.fontSource.asObservable();
+        this.currentColumn = this.columnSource.asObservable();
+    }
+    FontChangesService.prototype.changeFont = function (font, column) {
+        this.columnSource.next(column);
+        this.fontSource.next(font);
+    };
+    FontChangesService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [])
+    ], FontChangesService);
+    return FontChangesService;
+}());
+exports.FontChangesService = FontChangesService;
+
+
+/***/ }),
+
 /***/ "./src/services/index.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5900,6 +6019,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__("./src/services/scrollbar-helper.service.ts"));
 __export(__webpack_require__("./src/services/dimensions-helper.service.ts"));
 __export(__webpack_require__("./src/services/column-changes.service.ts"));
+__export(__webpack_require__("./src/services/font-changes.service.ts"));
 
 
 /***/ }),
@@ -6151,11 +6271,18 @@ function setColumnDefaults(columns) {
              * http response
             */
         if (!isNullOrUndefined(column.header1)) {
-            column.header1 = camel_case_1.deCamelCase(String(column.header1));
+            column.header1 = camel_case_1.deCamelCase(String(column.header1)).toLowerCase();
         }
         if (!isNullOrUndefined(column.header2)) {
-            column.header2 = camel_case_1.deCamelCase(String(column.header2));
+            column.header2 = camel_case_1.deCamelCase(String(column.header2)).toLowerCase();
         }
+        if (!isNullOrUndefined(column.header1Title)) {
+            column.header1Title = camel_case_1.deCamelCase(String(column.header1Title));
+        }
+        if (!isNullOrUndefined(column.header2Title)) {
+            column.header2Title = camel_case_1.deCamelCase(String(column.header2Title));
+        }
+        if (!column.hasOwnProperty('modified')) { }
         if (!column.hasOwnProperty('resizeable')) {
             column.resizeable = true;
         }
@@ -6242,6 +6369,9 @@ function getterForProp(prop) {
         if (prop.indexOf('.') !== -1) {
             return deepValueGetter;
         }
+        else if (prop.indexOf('_') !== -1) {
+            return objValueGetter;
+        }
         else {
             return shallowValueGetter;
         }
@@ -6312,6 +6442,23 @@ function deepValueGetter(obj, path) {
     return current;
 }
 exports.deepValueGetter = deepValueGetter;
+/**
+ * Returns a deep object given a string. obj['obj.name']
+ * @param {object} obj
+ * @param {string} path
+ */
+function objValueGetter(obj, path) {
+    if (obj == null)
+        return '';
+    if (!obj || !path)
+        return obj;
+    var split = path.split('_');
+    var objName = split[0];
+    var eleName = split[1].toLocaleLowerCase();
+    var subObj = obj[objName];
+    return subObj[eleName];
+}
+exports.objValueGetter = objValueGetter;
 
 
 /***/ }),
