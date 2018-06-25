@@ -36,8 +36,50 @@ import {DatatableComponent} from '../../src/components/datatable.component';
         [columnMode]="'force'"
         [headerHeight]="80"
         [footerHeight]="50"
-        [rowHeight]="90">
+        [rowHeight]="120">
 
+        <ngx-datatable-column name="customerName" [width]="500">
+        <!--  
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <span class="thick">{{value}}</span>
+          </ng-template>
+          -->
+        </ngx-datatable-column>
+    
+      </ngx-datatable>
+
+      
+    </div>
+
+    <ng-template #cell1Tmpl 
+          let-row="row" 
+          let-column="column" 
+          >
+            {{(row[column.prop])[column.header1]}}
+        </ng-template>
+
+        <ng-template #cell2Tmpl 
+          let-row="row" 
+          let-column="column"         
+          >
+            {{(row[column.prop])[column.header2]}}
+        </ng-template>
+
+        <ng-template #subHdr1Tpl
+          let-column="column"
+          let-sortHeaderFn="sortHeaderFn"
+          >
+          <span (click)="sortHeaderFn('header1')">{{column.header1Title}}</span>  
+        </ng-template>
+
+        <ng-template #subHdr2Tpl
+          let-column="column"
+          let-sortHeaderFn="sortHeaderFn"
+          >
+          <span (click)="sortHeaderFn('header2')">{{column.header2Title}}</span>  
+        </ng-template>
+
+        <!--
         <ngx-datatable-column prop="customer" 
                               modified="true"
                               header1="name" 
@@ -71,44 +113,7 @@ import {DatatableComponent} from '../../src/components/datatable.component';
                               [cell1Template]="cell1Tmpl" 
                               [cell2Template]="cell2Tmpl">
         </ngx-datatable-column>
-
-        <ng-template #cell1Tmpl 
-          let-row="row" 
-          let-column="column" 
-          >
-            {{(row[column.prop])[column.header1]}}
-        </ng-template>
-
-        <ng-template #cell2Tmpl 
-          let-row="row" 
-          let-column="column"         
-          >
-            {{(row[column.prop])[column.header2]}}
-        </ng-template>
-
-        <ng-template #subHdr1Tpl
-          let-column="column"
-          let-sortHeaderFn="sortHeaderFn"
-          >
-          <span (click)="sortHeaderFn('header1')">{{column.header1Title}}</span>  
-        </ng-template>
-
-        <ng-template #subHdr2Tpl
-          let-column="column"
-          let-sortHeaderFn="sortHeaderFn"
-          >
-          <span (click)="sortHeaderFn('header2')">{{column.header2Title}}</span>  
-        </ng-template>
-
-
-        
-
-        
-    
-      </ngx-datatable>
-
-      
-    </div>
+        -->
   `,
   styles: [
     '.bold {font-weight: bold;}'
@@ -159,7 +164,7 @@ export class MultipleSortComponent {
   fetch(cb) {
     const req = new XMLHttpRequest();
     // req.open('GET', `assets/data/company.json`);
-    req.open('GET', `demo/modified/objectInRow.json`);
+    req.open('GET', `demo/modified/flatRow.json`);
 
     req.onload = () => {
       const data = JSON.parse(req.response);

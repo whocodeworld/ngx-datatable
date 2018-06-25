@@ -26,7 +26,7 @@ import { FontChangesService } from '../../services';
         />
       </label>
       <span
-        *ngIf="!column.cellTemplate && !column.modified"
+        *ngIf="!column.cellTemplate || !column.modified"
         [title]="sanitizedValue"
         [innerHTML]="value">
       </span>
