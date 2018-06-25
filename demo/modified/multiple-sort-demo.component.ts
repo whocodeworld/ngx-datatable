@@ -36,16 +36,51 @@ import {DatatableComponent} from '../../src/components/datatable.component';
         [columnMode]="'force'"
         [headerHeight]="80"
         [footerHeight]="50"
-        [rowHeight]="120">
+        [rowHeight]="80">
 
+        <ngx-datatable-column prop="customer" 
+        modified="true"
+        header1="name" 
+        header2="customerId" 
+        header1Title="Name"
+        header2Title="Nummer"
+        [header1Template]="subHdr1Tpl"
+        [header2Template]="subHdr2Tpl"
+        [cell1Template]="cell1Tmpl" 
+        [cell2Template]="cell2Tmpl">
+</ngx-datatable-column>
+
+<ngx-datatable-column prop="company"
+modified="true"
+header1="name" 
+header1Title="Firma" 
+[header1Template]="subHdr1Tpl" 
+[cell1Template]="cell1Tmpl"
+[draggable]="false">
+
+</ngx-datatable-column>
+
+<ngx-datatable-column prop="name" 
+        modified="true"
+        header1="first" 
+        header2="last" 
+        header1Title="Vorname"
+        header2Title="Nachname"
+        [header1Template]="subHdr1Tpl"
+        [header2Template]="subHdr2Tpl"
+        [cell1Template]="cell1Tmpl" 
+        [cell2Template]="cell2Tmpl">
+</ngx-datatable-column>
+
+        <!--
         <ngx-datatable-column name="customerName" [width]="500">
-        <!--  
+        
         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
             <span class="thick">{{value}}</span>
           </ng-template>
-          -->
+        
         </ngx-datatable-column>
-    
+        -->
       </ngx-datatable>
 
       
@@ -80,39 +115,7 @@ import {DatatableComponent} from '../../src/components/datatable.component';
         </ng-template>
 
         <!--
-        <ngx-datatable-column prop="customer" 
-                              modified="true"
-                              header1="name" 
-                              header2="customerId" 
-                              header1Title="Name"
-                              header2Title="Nummer"
-                              [header1Template]="subHdr1Tpl"
-                              [header2Template]="subHdr2Tpl"
-                              [cell1Template]="cell1Tmpl" 
-                              [cell2Template]="cell2Tmpl">
-        </ngx-datatable-column>
-
-        <ngx-datatable-column prop="company"
-          modified="true"
-          header1="name" 
-          header1Title="Firma" 
-          [header1Template]="subHdr1Tpl" 
-          [cell1Template]="cell1Tmpl"
-          [draggable]="false">
-          
-        </ngx-datatable-column>
-
-        <ngx-datatable-column prop="name" 
-                              modified="true"
-                              header1="first" 
-                              header2="last" 
-                              header1Title="Vorname"
-                              header2Title="Nachname"
-                              [header1Template]="subHdr1Tpl"
-                              [header2Template]="subHdr2Tpl"
-                              [cell1Template]="cell1Tmpl" 
-                              [cell2Template]="cell2Tmpl">
-        </ngx-datatable-column>
+       
         -->
   `,
   styles: [
@@ -164,8 +167,8 @@ export class MultipleSortComponent {
   fetch(cb) {
     const req = new XMLHttpRequest();
     // req.open('GET', `assets/data/company.json`);
-    req.open('GET', `demo/modified/flatRow.json`);
-
+    // req.open('GET', `demo/modified/flatRow.json`);
+    req.open('GET', `demo/modified/objectInRow.json`);
     req.onload = () => {
       const data = JSON.parse(req.response);
       cb(data);

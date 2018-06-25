@@ -46,6 +46,9 @@ function setColumnDefaults(columns) {
             column.header2Title = camel_case_1.deCamelCase(String(column.header2Title));
         }
         if (!column.hasOwnProperty('modified')) {
+            column.modified = false;
+        }
+        else {
             column.modified = true;
         }
         if (!column.hasOwnProperty('resizeable')) {

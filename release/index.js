@@ -1,5 +1,5 @@
 /**
- * angular2-data-table v"13.0.1-0.8" (https://github.com/swimlane/angular2-data-table)
+ * angular2-data-table v"13.0.1-0.9" (https://github.com/swimlane/angular2-data-table)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -645,7 +645,7 @@ var DataTableBodyCellComponent = /** @class */ (function () {
         core_1.Component({
             selector: 'datatable-body-cell',
             // changeDetection: ChangeDetectionStrategy.OnPush,
-            template: "\n    <div class=\"datatable-body-cell-label\">\n      <label\n        *ngIf=\"column.checkboxable && (!displayCheck || displayCheck(row, column, value))\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"isSelected\"\n          (click)=\"onCheckboxChange($event)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.cellTemplate || !column.modified\"\n        [title]=\"sanitizedValue\"\n        [innerHTML]=\"value\">\n      </span>\n\n\n      \n      <ng-template #cellTemplate\n        *ngIf=\"column.cellTemplate\"\n        [ngTemplateOutlet]=\"column.cellTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n\n\n      <div [class.is-bold]=\"clickedColumn === column.prop && cellFont === 'header1'\">\n      <ng-template #cell1Template\n        *ngIf=\"column.cell1Template\"\n        [ngTemplateOutlet]=\"column.cell1Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n\n      <br>\n\n      <div [ngClass]=\"{'is-bold': clickedColumn === column.prop && cellFont === 'header2'}\">\n      <ng-template #cell2Template\n        *ngIf=\"column.cell2Template\"\n        [ngTemplateOutlet]=\"column.cell2Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n      \n      \n    </div>\n  "
+            template: "\n    <div class=\"datatable-body-cell-label\">\n      <label\n        *ngIf=\"column.checkboxable && (!displayCheck || displayCheck(row, column, value))\"\n        class=\"datatable-checkbox\">\n        <input\n          type=\"checkbox\"\n          [checked]=\"isSelected\"\n          (click)=\"onCheckboxChange($event)\"\n        />\n      </label>\n      <span\n        *ngIf=\"!column.cellTemplate && !column.modified\"\n        [title]=\"sanitizedValue\"\n        [innerHTML]=\"value\">\n      </span>\n\n\n      \n      <ng-template #cellTemplate\n        *ngIf=\"column.cellTemplate && !column.modified\"\n        [ngTemplateOutlet]=\"column.cellTemplate\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n\n\n      <div [class.is-bold]=\"clickedColumn === column.prop && cellFont === 'header1'\">\n      <ng-template #cell1Template\n        *ngIf=\"column.cell1Template && column.modified\"\n        [ngTemplateOutlet]=\"column.cell1Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n\n      <br>\n\n      <div [ngClass]=\"{'is-bold': clickedColumn === column.prop && cellFont === 'header2'}\">\n      <ng-template #cell2Template\n        *ngIf=\"column.cell2Template && column.modified\"\n        [ngTemplateOutlet]=\"column.cell2Template\"\n        [ngTemplateOutletContext]=\"cellContext\">\n      </ng-template>\n      </div>\n      \n      \n    </div>\n  "
         }),
         __metadata("design:paramtypes", [core_1.ElementRef, core_1.ChangeDetectorRef, services_1.FontChangesService])
     ], DataTableBodyCellComponent);
@@ -6279,6 +6279,9 @@ function setColumnDefaults(columns) {
             column.header2Title = camel_case_1.deCamelCase(String(column.header2Title));
         }
         if (!column.hasOwnProperty('modified')) {
+            column.modified = false;
+        }
+        else {
             column.modified = true;
         }
         if (!column.hasOwnProperty('resizeable')) {

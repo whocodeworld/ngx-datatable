@@ -52,6 +52,8 @@ export function setColumnDefaults(columns: TableColumn[]) {
     }
 
     if(!column.hasOwnProperty('modified')) {
+      column.modified = false;
+    } else {
       column.modified = true;
     }
 
