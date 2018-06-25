@@ -54,7 +54,7 @@ import { FontChangesService } from '../../services';
         </ng-template>
 
         <span
-            *ngIf="clickedHeader === 'header1'"
+            *ngIf="column.header1"
             (click)="onSortHeader('header1')"
             [class]="sortClass">
         </span>
@@ -69,7 +69,7 @@ import { FontChangesService } from '../../services';
           [ngTemplateOutletContext]="cellContext">
         </ng-template>
         <span
-          *ngIf="clickedHeader === 'header2'"
+          *ngIf="column.header2"
           (click)="onSortHeader('header2')"
           [class]="sortClass">
         </span>
