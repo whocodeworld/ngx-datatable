@@ -127,7 +127,8 @@ var DatatableComponent = /** @class */ (function () {
         this.messages = {
             // Message to show when array is presented
             // but contains no values
-            emptyMessage: 'No data to display',
+            // emptyMessage: 'No data to display',
+            emptyMessage: '',
             // Footer total message
             totalMessage: 'total',
             // Footer selected message
