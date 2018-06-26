@@ -32,7 +32,6 @@ import { FontChangesService } from '../../services';
       </span>
 
 
-      
       <ng-template #cellTemplate
         *ngIf="column.cellTemplate && !column.modified"
         [ngTemplateOutlet]="column.cellTemplate"
@@ -40,7 +39,7 @@ import { FontChangesService } from '../../services';
       </ng-template>
 
 
-      <div [class.is-bold]="clickedColumn === column.prop && cellFont === 'header1'">
+      <div [class.bold]="clickedColumn === column.prop && cellFont === 'header1'">
       <ng-template #cell1Template
         *ngIf="column.cell1Template && column.modified"
         [ngTemplateOutlet]="column.cell1Template"
@@ -48,9 +47,7 @@ import { FontChangesService } from '../../services';
       </ng-template>
       </div>
 
-      <br>
-
-      <div [ngClass]="{'is-bold': clickedColumn === column.prop && cellFont === 'header2'}">
+      <div [ngClass]="{'bold': clickedColumn === column.prop && cellFont === 'header2'}">
       <ng-template #cell2Template
         *ngIf="column.cell2Template && column.modified"
         [ngTemplateOutlet]="column.cell2Template"

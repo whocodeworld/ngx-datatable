@@ -370,7 +370,8 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   @Input() messages: any = {
     // Message to show when array is presented
     // but contains no values
-    emptyMessage: 'No data to display',
+    // emptyMessage: 'No data to display',
+    emptyMessage: '',
 
     // Footer total message
     totalMessage: 'total',
