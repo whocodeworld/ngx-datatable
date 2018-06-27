@@ -45,10 +45,10 @@ export function setColumnDefaults(columns: TableColumn[]) {
       column.header2 = String(column.header2);
     }
     if (!isNullOrUndefined(column.header1Title)) {
-      column.header1Title = deCamelCase(String(column.header1Title));
+      column.header1Title = String(column.header1Title);
     }
     if (!isNullOrUndefined(column.header2Title)) {
-      column.header2Title = deCamelCase(String(column.header2Title));
+      column.header2Title = String(column.header2Title);
     }
 
     if(!column.hasOwnProperty('modified')) {

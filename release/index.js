@@ -1,5 +1,5 @@
 /**
- * angular2-data-table v"13.0.1-0.13" (https://github.com/swimlane/angular2-data-table)
+ * angular2-data-table v"13.0.1-0.14" (https://github.com/swimlane/angular2-data-table)
  * Copyright 2016
  * Licensed under MIT
  */
@@ -6274,10 +6274,10 @@ function setColumnDefaults(columns) {
             column.header2 = String(column.header2);
         }
         if (!isNullOrUndefined(column.header1Title)) {
-            column.header1Title = camel_case_1.deCamelCase(String(column.header1Title));
+            column.header1Title = String(column.header1Title);
         }
         if (!isNullOrUndefined(column.header2Title)) {
-            column.header2Title = camel_case_1.deCamelCase(String(column.header2Title));
+            column.header2Title = String(column.header2Title);
         }
         if (!column.hasOwnProperty('modified')) {
             column.modified = false;
