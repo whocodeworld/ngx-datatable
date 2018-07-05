@@ -217,6 +217,22 @@ export interface TableColumn {
   prop?: TableColumnProp;
 
   /**
+   * Cell 1 template ref
+   *
+   * @type {*}
+   * @memberOf TableColumn
+   */
+  cell1Template?: any;
+
+  /**
+   * Cell 2 template ref
+   *
+   * @type {*}
+   * @memberOf TableColumn
+   */
+  cell2Template?: any;
+
+  /**
    * Cell template ref
    *
    * @type {*}
