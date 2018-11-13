@@ -15,10 +15,6 @@ export class DataTableColumnDirective implements OnChanges {
   @Input() header2: string;
   @Input() header1Title: string;
   @Input() header2Title: string;
-  @Input()  header1Template: TemplateRef<any>;
-  @Input()  header2Template: TemplateRef<any>;
-  @Input()  cell1Template: TemplateRef<any>;
-  @Input()  cell2Template: TemplateRef<any>;
   @Input() name: string;
   @Input() prop: TableColumnProp;
   @Input() frozenLeft: any;
@@ -49,6 +45,22 @@ export class DataTableColumnDirective implements OnChanges {
   @Input()
   @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef })
   headerTemplate: TemplateRef<any>;
+
+  @Input()
+  @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef })
+  header1Template: TemplateRef<any>;
+
+  @Input()
+  @ContentChild(DataTableColumnHeaderDirective, { read: TemplateRef })
+  header2Template: TemplateRef<any>;
+
+  @Input()
+  @ContentChild(DataTableColumnCellDirective, { read: TemplateRef })
+  cell1Template: TemplateRef<any>;
+
+  @Input()
+  @ContentChild(DataTableColumnCellDirective, { read: TemplateRef })
+  cell2Template: TemplateRef<any>;
 
   @Input()
   @ContentChild(DataTableColumnCellTreeToggle, { read: TemplateRef })
