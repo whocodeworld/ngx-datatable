@@ -15,6 +15,10 @@ export class DataTableColumnDirective implements OnChanges {
   @Input() header2: string;
   @Input() header1Title: string;
   @Input() header2Title: string;
+  @Input()  header1Template: TemplateRef<any>;
+  @Input()  header2Template: TemplateRef<any>;
+  @Input()  cell1Template: TemplateRef<any>;
+  @Input()  cell2Template: TemplateRef<any>;
   @Input() name: string;
   @Input() prop: TableColumnProp;
   @Input() frozenLeft: any;
