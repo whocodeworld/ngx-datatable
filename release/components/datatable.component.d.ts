@@ -223,6 +223,14 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      */
     virtualization: boolean;
     /**
+     * Tree from relation
+     */
+    treeFromRelation: string;
+    /**
+     * Tree to relation
+     */
+    treeToRelation: string;
+    /**
      * A flag for switching summary row on / off
      */
     summaryRow: boolean;
@@ -273,6 +281,10 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
         content: any;
     }>;
     /**
+     * A row was expanded ot collapsed for tree
+     */
+    treeAction: EventEmitter<any>;
+    /**
      * CSS class applied if the header height if fixed height.
      */
     readonly isFixedHeader: boolean;
@@ -286,6 +298,11 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * vertical scrolling is enabled.
      */
     readonly isVertScroll: boolean;
+    /**
+     * CSS class applied to root element if
+     * virtualization is enabled.
+     */
+    readonly isVirtualized: boolean;
     /**
      * CSS class applied to the root element
      * if the horziontal scrolling is enabled.
@@ -480,6 +497,10 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
      * A row was selected from body
      */
     onBodySelect(event: any): void;
+    /**
+     * A row was expanded or collapsed for tree
+     */
+    onTreeAction(event: any): void;
     ngOnDestroy(): void;
     /**
      * listen for changes to input bindings of all DataTableColumnDirective and

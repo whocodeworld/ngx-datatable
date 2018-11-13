@@ -26,6 +26,8 @@ export declare class DataTableColumnDirective implements OnChanges {
     headerCheckboxable: boolean;
     headerClass: string | ((data: any) => string | any);
     cellClass: string | ((data: any) => string | any);
+    isTreeColumn: boolean;
+    treeLevelIndent: number;
     summaryFunc: (cells: any[]) => any;
     summaryTemplate: TemplateRef<any>;
     cellTemplate: TemplateRef<any>;
@@ -34,6 +36,7 @@ export declare class DataTableColumnDirective implements OnChanges {
     header2Template: TemplateRef<any>;
     cell1Template: TemplateRef<any>;
     cell2Template: TemplateRef<any>;
+    treeToggleTemplate: TemplateRef<any>;
     private isFirstChange;
     constructor(columnChangesService: ColumnChangesService);
     ngOnChanges(): void;
