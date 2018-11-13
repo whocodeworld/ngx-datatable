@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/swimlane/ngx-datatable.svg?branch=master)](https://travis-ci.org/swimlane/ngx-datatable)
 [![Test Coverage](https://codeclimate.com/github/swimlane/ngx-datatable/badges/coverage.svg)](https://codeclimate.com/github/swimlane/ngx-datatable/coverage)
 [![npm version](https://badge.fury.io/js/%40swimlane%2Fngx-datatable.svg)](https://badge.fury.io/js/%40swimlane%2Fngx-datatable)
+[![npm downloads](https://img.shields.io/npm/dm/@swimlane/ngx-datatable.svg)](https://npmjs.org/@swimlane/ngx-datatable)
 
 # Forked from https://github.com/swimlane/ngx-datatable
 

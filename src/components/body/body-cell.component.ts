@@ -8,6 +8,9 @@ import { Keys } from '../../utils';
 import { SortDirection } from '../../types';
 import { TableColumn } from '../../types/table-column.type';
 import { MouseEvent, KeyboardEvent } from '../../events';
+import { ContentChild } from '@angular/core/src/metadata/di';
+
+export type TreeStatus = 'collapsed' | 'expanded' | 'loading' | 'disabled';
 
 import { FontChangesService } from '../../services';
 
@@ -15,7 +18,8 @@ import { FontChangesService } from '../../services';
   selector: 'datatable-body-cell',
   // changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="datatable-body-cell-label">
+    <div class="datatable-body-cell-label"
+      [style.margin-left.px]="calcLeftMargin(column, row)">
       <label
         *ngIf="column.checkboxable && (!displayCheck || displayCheck(row, column, value))"
         class="datatable-checkbox">
@@ -25,6 +29,27 @@ import { FontChangesService } from '../../services';
           (click)="onCheckboxChange($event)"
         />
       </label>
+      <ng-container *ngIf="column.isTreeColumn">
+        <button *ngIf="!column.treeToggleTemplate"
+          class="datatable-tree-button"
+          [disabled]="treeStatus==='disabled'"
+          (click)="onTreeAction()">
+          <span>
+            <i *ngIf="treeStatus==='loading'"
+              class="icon datatable-icon-collapse"></i>
+            <i *ngIf="treeStatus==='collapsed'"
+              class="icon datatable-icon-up"></i>
+            <i *ngIf="treeStatus==='expanded' ||
+                      treeStatus==='disabled'"
+              class="icon datatable-icon-down"></i>
+          </span>
+        </button>
+        <ng-template *ngIf="column.treeToggleTemplate"
+          [ngTemplateOutlet]="column.treeToggleTemplate"
+          [ngTemplateOutletContext]="{ cellContext: cellContext }">
+        </ng-template>
+      </ng-container>
+
       <span
         *ngIf="!column.cellTemplate && !column.modified"
         [title]="sanitizedValue"
@@ -59,14 +84,14 @@ import { FontChangesService } from '../../services';
     </div>
   `
 })
-export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
-  @Input() displayCheck: any;
+export class DataTableBodyCellComponent implements DoCheck, OnDestroy {
+  @Input() displayCheck: (row: any, column?: TableColumn, value?: any) => boolean;
 
   @Input() set group(group: any) {
     this._group = group;
     this.cellContext.group = group;
     this.checkValueUpdates();
-    this.cd.markForCheck();    
+    this.cd.markForCheck();
   }
 
   get group() {
@@ -77,7 +102,7 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
     this._rowHeight = val;
     this.cellContext.rowHeight = val;
     this.checkValueUpdates();
-    this.cd.markForCheck();        
+    this.cd.markForCheck();
   }
 
   get rowHeight() {
@@ -93,7 +118,7 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
   get isSelected(): boolean {
     return this._isSelected;
   }
-  
+
   @Input() set expanded(val: boolean) {
     this._expanded = val;
     this.cellContext.expanded = val;
@@ -146,21 +171,41 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
     return this._sorts;
   }
 
+  @Input() set treeStatus(status: TreeStatus) {
+    if (status !== 'collapsed' &&
+        status !== 'expanded' &&
+        status !== 'loading' &&
+        status !== 'disabled') {
+      this._treeStatus = 'collapsed';
+    } else {
+      this._treeStatus = status;
+    }
+    this.cellContext.treeStatus = this._treeStatus;
+    this.checkValueUpdates();
+    this.cd.markForCheck();
+  }
+
+  get treeStatus(): TreeStatus {
+    return this._treeStatus;
+  }
+
   @Output() activate: EventEmitter<any> = new EventEmitter();
+
+  @Output() treeAction: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
 
   @HostBinding('class')
-  get columnCssClasses(): any {    
+  get columnCssClasses(): any {
     let cls = 'datatable-body-cell';
     if (this.column.cellClass) {
       if (typeof this.column.cellClass === 'string') {
         cls += ' ' + this.column.cellClass;
       } else if(typeof this.column.cellClass === 'function') {
-        const res = this.column.cellClass({ 
-          row: this.row, 
-          group: this.group, 
-          column: this.column, 
+        const res = this.column.cellClass({
+          row: this.row,
+          group: this.group,
+          column: this.column,
           value: this.value ,
           rowHeight: this.rowHeight
         });
@@ -224,7 +269,9 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
     column: this.column,
     rowHeight: this.rowHeight,
     isSelected: this.isSelected,
-    rowIndex: this.rowIndex
+    rowIndex: this.rowIndex,
+    treeStatus: this.treeStatus,
+    onTreeAction: this.onTreeAction.bind(this),
   };
 
   private _isSelected: boolean;
@@ -236,16 +283,12 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
   private _rowIndex: number;
   private _expanded: boolean;
   private _element: any;
+  private _treeStatus: TreeStatus;
 
   constructor(element: ElementRef, private cd: ChangeDetectorRef, private fontChangesService: FontChangesService) {
     this._element = element.nativeElement;
   }
 
-  ngOnInit() {
-    this.fontChangesService.currentFont.subscribe(font => this.cellFont = font);
-    this.fontChangesService.currentColumn.subscribe(column => this.clickedColumn = column);
-  }
-  
   ngDoCheck(): void {
     this.checkValueUpdates();
   }
@@ -313,7 +356,7 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
       group: this.group,
       rowHeight: this.rowHeight,
       column: this.column,
-      value: this.value,      
+      value: this.value,
       cellElement: this._element
     });
   }
@@ -356,7 +399,8 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
       rowHeight: this.rowHeight,
       column: this.column,
       value: this.value,
-      cellElement: this._element
+      cellElement: this._element,
+      treeStatus: 'collapsed'
     });
   }
 
@@ -373,6 +417,15 @@ export class DataTableBodyCellComponent implements OnInit, DoCheck, OnDestroy {
   stripHtml(html: string): string {
     if(!html.replace) return html;
     return html.replace(/<\/?[^>]+(>|$)/g, '');
+  }
+
+  onTreeAction() {
+    this.treeAction.emit(this.row);
+  }
+
+  calcLeftMargin(column: any, row: any) {
+    const levelIndent = column.treeLevelIndent != null ? column.treeLevelIndent : 50;
+    return column.isTreeColumn ? row.level * levelIndent : 0;
   }
 
 }
