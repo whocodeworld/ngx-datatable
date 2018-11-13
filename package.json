@@ -1,6 +1,6 @@
 {
   "name": "pcneo-ngx-datatable",
-  "version": "14.0.1-0.15",
+  "version": "14.0.1-0.16",
   "description": "forked from https://github.com/swimlane/ngx-datatable. ngx-datatable is a Angular2+ table grid component for presenting large and complex data.",
   "main": "release/index.js",
   "typings": "release/index.d.ts",
